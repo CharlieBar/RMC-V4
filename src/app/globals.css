@@ -1,0 +1,126 @@
+@import "tailwindcss";
+
+@theme {
+  /* Brand Colors */
+  --color-navy: #0A1628;
+  --color-navy-mid: #132040;
+  --color-navy-light: #1A2E4A;
+  --color-red: #C8102E;
+  --color-red-dark: #A50D24;
+  --color-red-light: #E8183A;
+  --color-off-white: #F4F6F9;
+  --color-surface-warm: #FFF9F7;
+  --color-grey-100: #EEF1F6;
+  --color-grey-300: #C4CBD8;
+  --color-grey-500: #7A8599;
+  --color-grey-700: #3D4A5C;
+  --color-accent-teal: #2BBFB3;
+
+  /* Compassion Light — brand-defined urgency / warmth accent
+     Used for: same-day badges, "available now" dots, lamp-glow accents.
+     Source: Rand-V4-Navy-style-guide.md */
+  --color-amber: #F4B76A;
+  --color-amber-dark: #D89A4A;
+  --color-amber-light: #F9D49A;
+
+  /* Typography */
+  --font-serif: "DM Serif Display", serif;
+  --font-sans: "DM Sans", sans-serif;
+}
+
+/* Base styles */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-sans);
+  color: var(--color-navy);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+::selection {
+  background-color: var(--color-red);
+  color: white;
+}
+
+/* Skip to content */
+.skip-to-content {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 999;
+  padding: 1rem 2rem;
+  background: var(--color-red);
+  color: white;
+  font-weight: 700;
+  text-decoration: none;
+}
+.skip-to-content:focus {
+  left: 0;
+}
+
+/* Focus visible for accessibility */
+*:focus-visible {
+  outline: 2px solid var(--color-red);
+  outline-offset: 2px;
+}
+
+/* Legal prose styles */
+.prose-legal p {
+  margin-bottom: 1.25rem;
+  font-size: 15px;
+  line-height: 1.75;
+}
+.prose-legal strong {
+  font-weight: 700;
+  color: var(--color-navy);
+  display: block;
+  margin-top: 1.75rem;
+  margin-bottom: 0.5rem;
+  font-size: 15px;
+  letter-spacing: 0.01em;
+}
+
+/* Marquee animation */
+@keyframes marquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+/* Grain texture for dark sections */
+.bg-grain {
+  position: relative;
+}
+.bg-grain::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: 0.03;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Red glow accent */
+.glow-red {
+  box-shadow: 0 0 60px rgba(200, 16, 46, 0.15), 0 0 120px rgba(200, 16, 46, 0.05);
+}
+
+/* Accessibility: Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
