@@ -157,9 +157,55 @@ After the initial pause point, the user authorized writing the support articles 
 
 ---
 
-## Deferred / Open Items
+## ✅ Block G — DEPLOYED
 
-1. **Block G — Deployment** — paused for user approval. Pre-flight checklist:
+**Live URL:** https://rmc-v4.netlify.app
+**GitHub:** https://github.com/CharlieBar/RMC-V4
+**Production branch:** `main`
+**Final deploy commit:** `290c572`
+
+### What shipped to production
+
+- **Vendored content** — copied `rand-medical-content/src/{content,types}` into `rmc-website/src/` so Netlify CI can build from a single repo. `tsconfig.json` paths and `next.config.ts` updated to drop the now-irrelevant sibling-directory references.
+- `git init` → first commit `feat: Rand Medical Center — full site overhaul v1` → merged remote README → pushed to `origin/main`.
+- Netlify connected via dashboard (`Import from Git` → `CharlieBar/RMC-V4`) using the existing `netlify.toml` (`@netlify/plugin-nextjs` v5, publish `.next`, Node 20).
+- `.env.local` correctly excluded by `.gitignore`. `.claude/` editor config also excluded.
+
+### Three production-only issues caught and fixed during deploy
+
+1. **`lucide-react` phantom dep** (commit `fab0256`) — 7 polished components imported from `lucide-react`, but the package was never in `package.json`. It resolved locally from a parent-tree global install (`C:\Users\islam\node_modules\`), masking the bug. Netlify CI does a clean install and broke. Fix: `npm install lucide-react --save` → pinned `^1.11.0`.
+2. **Netlify Forms plugin v5 migration** (commit `4d0c620`) — `@netlify/plugin-nextjs@5` no longer auto-detects forms inside dynamic React components; it requires a static HTML form template at build time. Fix: added `public/__forms.html` mirroring the contact form's name + fields, plus a honeypot `bot-field` for spam protection on both templates.
+3. **MDX loader pointing at sibling directory** (commit `290c572`) — `src/lib/mdx.ts` still resolved articles from `../rand-medical-content/src/content/articles`, which existed locally but not on Netlify. All 61 `/blog/<slug>` routes 404'd in production (build was 140/201 pages). Fix: repoint at the vendored `src/content/articles`. Build is now back to 201/201 on both sides.
+
+### Final smoke check — 38/38 routes 200 OK
+
+Tested 2026-04-28 at deploy commit `290c572`:
+
+- `/`, `/personal-injury`, `/work-injury`
+- All 7 service pillars (`/services/{pain-management, orthopedics, physical-therapy, immediate-care, internal-medicine, injury-services, diagnostic-surgical-services}`)
+- 2 service detail pages (`/services/pain-management/epidural-steroid-injections`, `/services/orthopedics/joint-replacement`)
+- `/conditions` + 5 condition pages (`back-pain`, `sciatica`, `knee-pain`, `neuropathy`, `auto-injury`)
+- `/blog` index + 5 new pillar articles + 2 support articles + 1 category page
+- All 5 about pages, `/contact`, `/careers`
+- `/patient-resources` + `/patient-resources/faq`
+- `/sitemap.xml`, `/robots.txt`
+
+**0 failures.**
+
+---
+
+## Deferred / Open Items (post-launch)
+
+1. **Custom domain** — set `randmedicalcenter.com` (or whichever) in Netlify dashboard → Domain management → Add custom domain → follow DNS instructions. After DNS propagates, update `NEXT_PUBLIC_SITE_URL` in Netlify env vars to match.
+2. **Netlify Forms inbox** — submissions to the contact form will now flow into the Netlify dashboard (Site → Forms). Verify by submitting a test, then set up notifications.
+3. **Lighthouse / Core Web Vitals** — recommend running a Lighthouse pass once DNS is final. The site is image-heavy; if CLS or LCP scores need polish, the hero images and `/services/[pillar]/[detail]` template are the obvious places to look first.
+4. **Dependency hygiene** — `npm audit` flagged 3 vulnerabilities (1 moderate, 2 high) at lucide-react install time. Worth a separate cleanup pass with `npm audit fix` after launch.
+
+---
+
+## Original deferred items
+
+1. **Block G — Deployment** — ✅ COMPLETED above. Original pre-flight checklist:
    - `git init` in `rmc-website/` (note: project is not yet a git repo)
    - First commit message: `feat: Rand Medical Center — full site overhaul v1`
    - Confirm `.gitignore` excludes `.next/`, `node_modules/`, `.env.local`
