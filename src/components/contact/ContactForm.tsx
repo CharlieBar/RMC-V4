@@ -76,10 +76,17 @@ export default function ContactForm({
           name="contact"
           method="POST"
           data-netlify="true"
+          netlify-honeypot="bot-field"
           onSubmit={handleSubmit}
           noValidate
         >
           <input type="hidden" name="form-name" value="contact" />
+          <p className="hidden" aria-hidden="true">
+            <label>
+              Don&rsquo;t fill this out if you&rsquo;re human:
+              <input name="bot-field" tabIndex={-1} autoComplete="off" />
+            </label>
+          </p>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 mb-5">
             {/* First Name */}

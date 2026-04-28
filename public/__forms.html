@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Form templates for Netlify Forms detection</title>
+  </head>
+  <body>
+    <!--
+      This file is required by @netlify/plugin-nextjs@5 to register Netlify
+      Forms at build time. The actual interactive form is rendered by
+      <ContactForm /> in src/components/contact/ContactForm.tsx; this static
+      template only mirrors its name + field names so Netlify's build step
+      can pick up form submissions on the live site.
+      Migration ref: https://ntl.fyi/next-runtime-forms-migration
+    -->
+    <form name="contact" data-netlify="true" netlify-honeypot="bot-field" hidden>
+      <input type="text" name="bot-field" />
+      <input type="text" name="firstName" />
+      <input type="text" name="lastName" />
+      <input type="tel"  name="phone" />
+      <input type="email" name="email" />
+      <select name="injuryType">
+        <option value="Work Injury">Work Injury</option>
+        <option value="Auto Accident">Auto Accident</option>
+        <option value="Chronic Pain">Chronic Pain</option>
+        <option value="Sports Injury">Sports Injury</option>
+        <option value="Other">Other</option>
+      </select>
+      <textarea name="message"></textarea>
+    </form>
+  </body>
+</html>
