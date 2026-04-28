@@ -4,7 +4,7 @@ import matter from "gray-matter";
 
 const ARTICLES_DIR = path.join(
   process.cwd(),
-  "../rand-medical-content/src/content/articles"
+  "src/content/articles"
 );
 
 export interface ArticleMeta {
